@@ -548,8 +548,8 @@ function LangProvider({ children }) {
       if (q === 'en' || q === 'tr') return q;
       const saved = localStorage.getItem('cn-lang');
       if (saved === 'en' || saved === 'tr') return saved;
-      return (navigator.language || '').toLowerCase().indexOf('tr') === 0 ? 'tr' : 'en';
-    } catch (e) { return 'en'; }
+      return 'tr'; // Turkish is the default language
+    } catch (e) { return 'tr'; }
   });
   const setLang = (l) => {
     setLangState(l);
