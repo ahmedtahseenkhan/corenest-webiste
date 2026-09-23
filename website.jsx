@@ -2,7 +2,7 @@
 // website.jsx — CoreNest marketing site
 // One-file React app. Composes hero, trust strip, stats, features,
 // product showcase, MITRE demo, threat ticker, comparison, quotes,
-// pricing, final CTA, and footer.
+// final CTA, and footer.
 
 const { useState: uS, useEffect: uE, useRef: uR, useContext: uC } = React;
 
@@ -53,7 +53,7 @@ const STR = {
       title: 'CoreNest — Catch what legacy SIEMs miss.',
       desc: 'The SIEM built for modern SOCs. 90% less alert noise, an 18-minute MTTR, and a MITRE matrix that actually maps to your detections.',
     },
-    nav: { product: 'Product', solutions: 'Solutions', pricing: 'Pricing', customers: 'Customers', resources: 'Resources', docs: 'Docs', signin: 'Sign in', demo: 'Book a demo' },
+    nav: { product: 'Product', solutions: 'Solutions', customers: 'Customers', resources: 'Resources', docs: 'Docs', signin: 'Sign in', demo: 'Book a demo' },
     hero: {
       eyebrow: 'CoreNest v4.2 · now with AI triage',
       title: [{ t: 'Catch what', br: true }, { t: 'legacy SIEMs', cls: 'strike' }, { t: ' ' }, { t: 'miss.', cls: 'accent' }],
@@ -151,20 +151,6 @@ const STR = {
         { text: '"We replaced Splunk in 6 weeks. Our team went from drowning in 800 alerts a day to triaging 30 notables. We hired a hunter instead of another tier-1."', role: 'Director of SecOps · Frontier Bank' },
         { text: '"The MITRE matrix view alone is worth the price. We finally see our coverage gaps without spreadsheets."', role: 'Threat Hunter · Vega Cloud' },
         { text: '"Risk-based alerting is the killer feature. Our MTTR dropped from 4h to 22 minutes."', role: 'SOC Manager · Northstar' },
-      ],
-    },
-    pricing: {
-      eyebrow: 'Pricing',
-      h2: ['Priced per ingestion, not per seat.', 'No surprise overages.'],
-      lede: '14-day free trial on every plan. Cancel anytime. Migrate from Splunk and get a free quarter of credit.',
-      badge: 'Most popular',
-      plans: [
-        { name: 'Starter', price: '$0', unit: 'free forever', tag: 'For small teams getting started with detection', cta: 'Start free',
-          features: ['5 agents · 10 GB/mo ingestion', 'Core SIEM + Discover + Alerts', 'MITRE ATT&CK matrix', '7-day retention', 'Community detection content'] },
-        { name: 'Business', price: '$2,400', unit: '/mo · billed annually', tag: 'For growing SOCs that need risk-based alerting', cta: 'Start 14-day trial',
-          features: ['Up to 500 agents · 500 GB/mo', { b: 'Everything in Starter, plus:' }, 'UEBA + Risk-based alerting', 'SOAR with 40+ playbooks', '90-day retention · ECS normalized', 'SSO + RBAC · 24×7 chat support'] },
-        { name: 'Enterprise', price: 'Custom', unit: 'contact sales', tag: 'For regulated industries and global SOCs', cta: 'Talk to sales',
-          features: ['Unlimited agents · custom retention', { b: 'Everything in Business, plus:' }, 'Air-gapped + multi-region', 'Custom detection content packs', 'Compliance hub (HIPAA, PCI, SOC 2)', 'Dedicated CSM + named threat analyst'] },
       ],
     },
     finalcta: {
@@ -270,7 +256,7 @@ const STR = {
       title: "CoreNest — Eski SIEM'lerin kaçırdığını yakalayın.",
       desc: "Modern SOC'lar için geliştirilen SIEM. %90 daha az uyarı gürültüsü, 18 dakikalık MTTR ve tespitlerinizle gerçekten eşleşen bir MITRE matrisi.",
     },
-    nav: { product: 'Ürün', solutions: 'Çözümler', pricing: 'Fiyatlandırma', customers: 'Müşteriler', resources: 'Kaynaklar', docs: 'Dokümanlar', signin: 'Giriş yap', demo: 'Demo planla' },
+    nav: { product: 'Ürün', solutions: 'Çözümler', customers: 'Müşteriler', resources: 'Kaynaklar', docs: 'Dokümanlar', signin: 'Giriş yap', demo: 'Demo planla' },
     hero: {
       eyebrow: 'CoreNest v4.2 · artık yapay zekâ triyajı ile',
       title: [{ t: "Eski SIEM'lerin", cls: 'strike', br: true }, { t: 'kaçırdığını ' }, { t: 'yakalayın.', cls: 'accent' }],
@@ -368,20 +354,6 @@ const STR = {
         { text: "\"Splunk'ı 6 haftada değiştirdik. Ekibimiz günde 800 uyarıda boğulmaktan 30 önemli uyarıyı triyaj etmeye geçti. Bir tier-1 daha yerine bir tehdit avcısı işe aldık.\"", role: 'SecOps Direktörü · Frontier Bank' },
         { text: '"Tek başına MITRE matris görünümü bile fiyatına değer. Kapsam boşluklarımızı nihayet elektronik tablolar olmadan görüyoruz."', role: 'Tehdit Avcısı · Vega Cloud' },
         { text: "\"Risk tabanlı uyarı en değerli özellik. MTTR'miz 4 saatten 22 dakikaya düştü.\"", role: 'SOC Yöneticisi · Northstar' },
-      ],
-    },
-    pricing: {
-      eyebrow: 'Fiyatlandırma',
-      h2: ['Koltuk başına değil, veri alımı başına.', 'Sürpriz aşım ücreti yok.'],
-      lede: "Her planda 14 gün ücretsiz deneme. İstediğiniz zaman iptal edin. Splunk'tan geçin, bir çeyreklik ücretsiz kredi kazanın.",
-      badge: 'En popüler',
-      plans: [
-        { name: 'Starter', price: '$0', unit: 'sonsuza dek ücretsiz', tag: 'Tespit ile yeni başlayan küçük ekipler için', cta: 'Ücretsiz başla',
-          features: ['5 ajan · aylık 10 GB veri alımı', 'Temel SIEM + Discover + Uyarılar', 'MITRE ATT&CK matrisi', '7 gün saklama', 'Topluluk tespit içeriği'] },
-        { name: 'Business', price: '$2,400', unit: '/ay · yıllık faturalandırma', tag: "Risk tabanlı uyarıya ihtiyaç duyan büyüyen SOC'lar için", cta: '14 günlük denemeyi başlat',
-          features: ['500 ajana kadar · aylık 500 GB', { b: "Starter'daki her şey, ayrıca:" }, 'UEBA + Risk tabanlı uyarı', '40+ senaryolu SOAR', '90 gün saklama · ECS normalize', 'SSO + RBAC · 7/24 sohbet desteği'] },
-        { name: 'Enterprise', price: 'Özel', unit: 'satışla iletişime geçin', tag: "Düzenlemeye tabi sektörler ve küresel SOC'lar için", cta: 'Satışla görüşün',
-          features: ['Sınırsız ajan · özel saklama', { b: "Business'taki her şey, ayrıca:" }, 'Hava boşluklu + çoklu bölge', 'Özel tespit içerik paketleri', 'Uyumluluk merkezi (HIPAA, PCI, SOC 2)', 'Özel CSM + atanmış tehdit analisti'] },
       ],
     },
     finalcta: {
@@ -589,7 +561,6 @@ function Nav() {
         <div className="nav-links">
           <a className="nav-link has-chevron" href="#features">{t.nav.product}</a>
           <a className="nav-link has-chevron" href="#showcase">{t.nav.solutions}</a>
-          <a className="nav-link" href="#pricing">{t.nav.pricing}</a>
           <a className="nav-link" href="#">{t.nav.customers}</a>
           <a className="nav-link has-chevron" href="#">{t.nav.resources}</a>
           <a className="nav-link" href="#">{t.nav.docs}</a>
@@ -1312,46 +1283,6 @@ function Testimonials() {
   );
 }
 
-/* ── pricing ── */
-function Pricing() {
-  const { t } = useLang();
-  const plans = t.pricing.plans;
-  return (
-    <section className="section" id="pricing">
-      <div className="container">
-        <div className="section-head reveal">
-          <div className="eyebrow muted">{t.pricing.eyebrow}</div>
-          <h2><Lines a={t.pricing.h2}/></h2>
-          <p className="lede center" style={{ marginTop: 16 }}>
-            {t.pricing.lede}
-          </p>
-        </div>
-        <div className="pricing-grid">
-          {plans.map((p, i) => {
-            const featured = i === 1;
-            return (
-            <div key={i} className={`plan ${featured ? 'featured' : ''} reveal`} data-delay={i + 1}>
-              {featured && <span className="plan-badge">{t.pricing.badge}</span>}
-              <div className="plan-name">{p.name}</div>
-              <div className="plan-price">{p.price}<span className="unit">{p.unit}</span></div>
-              <div className="plan-tagline">{p.tag}</div>
-              <a className={`btn ${featured ? 'btn-primary' : 'btn-secondary'} plan-cta`} href="#cta">
-                {p.cta} {IC.arrow}
-              </a>
-              <ul className="plan-features">
-                {p.features.map((f, j) => (
-                  <li key={j}>{IC.check}<span>{typeof f === 'string' ? f : <b>{f.b}</b>}</span></li>
-                ))}
-              </ul>
-            </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ── final CTA ── */
 function FinalCTA() {
   const { t } = useLang();
@@ -1696,7 +1627,6 @@ function Site() {
       <Ticker/>
       <Compare/>
       <Testimonials/>
-      <Pricing/>
       <FinalCTA/>
       <Footer/>
     </>
