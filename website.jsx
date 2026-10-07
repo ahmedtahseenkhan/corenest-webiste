@@ -790,18 +790,19 @@ function Showcase() {
   const items = t.showcase.items.map((it, i) => ({ ...it, demo: demoKeys[i] }));
 
   const ref = uR(null);
+  const userTookOver = uR(REDUCED);
   uE(() => {
     let id;
     const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) {
-        id = setInterval(() => setActive(a => (a + 1) % items.length), 4200);
-      } else {
-        clearInterval(id);
+      clearInterval(id);
+      if (e.isIntersecting && !userTookOver.current) {
+        id = setInterval(() => { if (!userTookOver.current) setActive(a => (a + 1) % items.length); }, 4200);
       }
     });
     if (ref.current) io.observe(ref.current);
     return () => { clearInterval(id); io.disconnect(); };
   }, []);
+  const choose = (i) => { userTookOver.current = true; setActive(i); };
 
   return (
     <section className="section" id="showcase" ref={ref}>
@@ -816,9 +817,12 @@ function Showcase() {
             {items.map((it, i) => (
               <div key={i}
                    className={`showcase-item ${active === i ? 'active' : ''}`}
-                   onClick={() => setActive(i)}
-                   onMouseEnter={() => setActive(i)}>
-                <h3>{it.name}</h3>
+                   onClick={() => choose(i)}
+                   onMouseEnter={() => choose(i)}>
+                <h3>
+                  <button type="button" className="showcase-btn" aria-pressed={active === i}
+                          aria-controls="showcase-panel" onFocus={() => choose(i)}>{it.name}</button>
+                </h3>
                 <p>{it.desc}</p>
               </div>
             ))}
@@ -827,7 +831,7 @@ function Showcase() {
             </div>
           </div>
 
-          <div className="showcase-panel reveal" data-delay="1">
+          <div className="showcase-panel reveal" data-delay="1" id="showcase-panel" aria-live="polite">
             <ShowcasePanel demo={items[active].demo}/>
           </div>
         </div>
@@ -1709,12 +1713,20 @@ function Architecture() {
   );
 }
 
+/* ── keyboard: jump past the nav ── */
+function SkipLink() {
+  const { lang } = useLang();
+  return <a className="skip-link" href="#main">{lang === 'en' ? 'Skip to content' : 'İçeriğe geç'}</a>;
+}
+
 /* ── App ── */
 function Site() {
   useReveal();
   return (
     <>
+      <SkipLink/>
       <Nav/>
+      <main id="main" tabIndex={-1}>
       <Hero/>
       <Stats/>
       <Statement/>
@@ -1728,6 +1740,7 @@ function Site() {
       <Compare/>
       <FAQ/>
       <FinalCTA/>
+      </main>
       <Footer/>
     </>
   );
