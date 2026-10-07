@@ -675,7 +675,7 @@ h4 { font-size: 15px; }
 }
 .foot-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
   gap: 40px;
   margin-bottom: 48px;
 }
@@ -1545,3 +1545,8 @@ a:focus-visible .roll-under > span { transform: translateY(0); }
 .demo-form .has-error input { border-color: rgba(242,85,85,0.7); }
 .demo-form .has-error input:focus { box-shadow: 0 0 0 3px var(--crit-soft); }
 .field-error { display: block; margin-top: 6px; font-size: 12px; font-style: normal; color: var(--crit); }
+
+.foot-contact span, .foot-contact address {
+  font-size: 12.5px; font-style: normal; color: var(--fg-3);
+  line-height: 1.5; padding: 5px 0; white-space: pre-line;
+}

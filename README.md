@@ -38,6 +38,9 @@ no build step. Skiper UI's free components require attribution, which is the
 
 - `web3formsKey`: Web3Forms access key; demo requests are emailed to the address you signed up with.
 - `gaId`: Google Analytics 4 measurement ID. When set, a cookie banner asks for consent and GA loads only after "Accept".
+- `company`: legal name, email, phone, address. Shown in the footer's Contact column and filled into the privacy policy and terms.
+
+Search the code for `TODO(owner)` and `TODO(legal)` to find everything still waiting for real content.
 
 ## Demo form
 
@@ -60,9 +63,9 @@ spam folder) of the Web3Forms account email. Repeat once on the live site.
 | `website.css` | All styles (dark, SOC-dashboard aesthetic) |
 | `assets/` | Dashboard screenshots and the link-preview images (TR + EN) |
 | `favicon.*`, `icon-*.png`, `site.webmanifest` | Browser and app icons |
-| `config.js` | Web3Forms key and Google Analytics ID |
+| `config.js` | Web3Forms key, Google Analytics ID, company contact details |
 | `analytics.js` | Cookie banner + Google Analytics (consent first) |
-| `privacy.html`, `thanks.html`, `404.html` | Plain pages, both languages; `pages.js` switches them |
+| `privacy.html`, `terms.html`, `thanks.html`, `404.html` | Plain pages, both languages; `pages.js` switches them and fills company details from `config.js` |
 | `robots.txt`, `sitemap.xml` | For search engines (domain: corenest.io) |
 | `.assetsignore` | Repo files Cloudflare must not publish |
 | `server.py` | Static file server on port 5051 (sends no-cache headers) |

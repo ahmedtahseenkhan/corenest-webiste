@@ -68,8 +68,23 @@
     window.dispatchEvent(new CustomEvent('cn:lang', { detail: lang }));
   }
 
+  // Company details from config.js replace the highlighted blanks
+  // (<span class="fill" data-config="email">[E-POSTA]</span>) once filled in.
+  function fillConfig() {
+    var c = (window.CORENEST_CONFIG || {}).company || {};
+    slots.map(function (s) { return s.node; }).concat([document.body]).forEach(function (root) {
+      root.querySelectorAll('[data-config]').forEach(function (el) {
+        var v = c[el.getAttribute('data-config')];
+        if (!v) return;
+        el.textContent = v;
+        el.classList.remove('fill');
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     collect();
+    fillConfig();
     apply(pick());
     document.querySelectorAll('[data-set-lang]').forEach(function (b) {
       b.addEventListener('click', function () {

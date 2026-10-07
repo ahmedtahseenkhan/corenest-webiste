@@ -57,6 +57,7 @@ const STR = {
       chips: ['+24 alerts in last 60s', 'jane.k · risk 142', 'MTTR 18min', 'MITRE T1059 +4'],
       shot: { src: '/assets/dashboard-en.webp', alt: 'CoreNest overview dashboard', path: 'corenest / overview', badge: '' },
     },
+    // TODO(owner): be ready to back these numbers (850K EPS, 3,000+ rules, 90% less noise, 18-min MTTR)
     stats: [
       { sub: 'K', b: 'events / sec' },
       { sub: '+', b: 'detection rules' },
@@ -145,6 +146,8 @@ const STR = {
       required: 'Please fill in this field.',
       badEmail: 'Enter a valid email address, like name@company.com.',
     },
+    // TODO(owner): confirm every FAQ answer (written from claims elsewhere on the site);
+    // the trial and pricing answers describe sales terms only you can confirm
     faq: {
       eyebrow: 'FAQ',
       h2: ['Questions,', 'answered.'],
@@ -161,9 +164,11 @@ const STR = {
       tagline: 'Modern SIEM for modern SOCs.',
       cols: [
         { title: 'Product', links: [{ label: 'AI triage', href: '#ai' }, { label: 'Detection & Sigma', href: '#detection' }, { label: 'Platform', href: '#platform' }, { label: 'Architecture', href: '#architecture' }] },
-        { title: 'Company', links: [{ label: 'FAQ', href: '#faq' }, { label: 'Request a demo', href: '#cta' }, { label: 'Privacy Policy', href: '/privacy' }] },
+        { title: 'Company', links: [{ label: 'FAQ', href: '#faq' }, { label: 'Request a demo', href: '#cta' }, { label: 'Privacy Policy', href: '/privacy' }, { label: 'Terms of Use', href: '/terms' }] },
       ],
+      contact: 'Contact',
       cookies: 'Cookie settings',
+      // TODO(owner): keep only if "CoreNest, Inc." is the legal name and these certifications are held
       bottom: '© 2026 CoreNest, Inc. SOC 2 Type II · ISO 27001 · GDPR',
       credit: 'Components by Skiper UI',
     },
@@ -326,6 +331,7 @@ const STR = {
       required: 'Lütfen bu alanı doldurun.',
       badEmail: 'Geçerli bir e-posta adresi girin, ör. ad@sirket.com.',
     },
+    // TODO(owner): confirm every FAQ answer (see the English block)
     faq: {
       eyebrow: 'SSS',
       h2: ['Merak', 'edilenler.'],
@@ -342,9 +348,11 @@ const STR = {
       tagline: "Modern SOC'lar için modern SIEM.",
       cols: [
         { title: 'Ürün', links: [{ label: 'Yapay zekâ triyajı', href: '#ai' }, { label: 'Tespit & Sigma', href: '#detection' }, { label: 'Platform', href: '#platform' }, { label: 'Mimari', href: '#architecture' }] },
-        { title: 'Şirket', links: [{ label: 'SSS', href: '#faq' }, { label: 'Demo talep edin', href: '#cta' }, { label: 'Gizlilik Politikası', href: '/privacy' }] },
+        { title: 'Şirket', links: [{ label: 'SSS', href: '#faq' }, { label: 'Demo talep edin', href: '#cta' }, { label: 'Gizlilik Politikası', href: '/privacy' }, { label: 'Kullanım Koşulları', href: '/terms' }] },
       ],
+      contact: 'İletişim',
       cookies: 'Çerez ayarları',
+      // TODO(owner): keep only if "CoreNest, Inc." is the legal name and these certifications are held
       bottom: '© 2026 CoreNest, Inc. SOC 2 Type II · ISO 27001 · GDPR',
       credit: 'Bileşenler: Skiper UI',
     },
@@ -1378,6 +1386,21 @@ function FinalCTA() {
   );
 }
 
+/* contact details come from config.js (company.*); hidden until filled in */
+function FooterContact({ title }) {
+  const c = (window.CORENEST_CONFIG || {}).company || {};
+  if (!c.email && !c.phone && !c.address) return null;
+  return (
+    <div className="foot-col foot-contact">
+      <h2 className="foot-h">{title}</h2>
+      {c.legalName && <span>{c.legalName}</span>}
+      {c.email && <a className="ulink" href={`mailto:${c.email}`}>{c.email}</a>}
+      {c.phone && <a className="ulink" href={`tel:${c.phone.replace(/[^+\d]/g, '')}`}>{c.phone}</a>}
+      {c.address && <address>{c.address}</address>}
+    </div>
+  );
+}
+
 /* ── footer (link underline from Skiper UI 40) ── */
 function Footer() {
   const { t, lang } = useLang();
@@ -1405,6 +1428,7 @@ function Footer() {
               ))}
             </div>
           ))}
+          <FooterContact title={t.footer.contact}/>
         </div>
         <div className="foot-bottom">
           <span>{t.footer.bottom}</span>
