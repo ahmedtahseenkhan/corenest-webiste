@@ -67,5 +67,6 @@ spam folder) of the Web3Forms account email. Repeat once on the live site.
 | `analytics.js` | Cookie banner + Google Analytics (consent first) |
 | `privacy.html`, `terms.html`, `thanks.html`, `404.html` | Plain pages, both languages; `pages.js` switches them and fills company details from `config.js` |
 | `robots.txt`, `sitemap.xml` | For search engines (domain: corenest.io) |
-| `.assetsignore` | Repo files Cloudflare must not publish |
+| `.assetsignore` | Repo files Cloudflare must not publish (`.git`, `server.py`, …) |
+| `_headers` | Security headers (CSP, HSTS, …); Cloudflare reads it, `server.py` mirrors it locally |
 | `server.py` | Static file server on port 5051 (sends no-cache headers) |
