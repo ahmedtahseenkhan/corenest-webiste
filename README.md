@@ -39,6 +39,18 @@ no build step. Skiper UI's free components require attribution, which is the
 - `web3formsKey`: Web3Forms access key; demo requests are emailed to the address you signed up with.
 - `gaId`: Google Analytics 4 measurement ID. When set, a cookie banner asks for consent and GA loads only after "Accept".
 
+## Demo form
+
+Submissions go from the browser to **Web3Forms** (`api.web3forms.com`), which
+emails them to the address that owns `web3formsKey`. Nothing is stored on
+this site. Spam protection: a hidden honeypot field, a 3-second minimum before
+sending, and Web3Forms' own filter. Success goes to `/thanks`, which also sends
+the `generate_lead` analytics event (only with cookie consent).
+
+To test delivery: set `web3formsKey`, run `python3 server.py`, send the form on
+<http://localhost:5051/#cta> with your own address, and check the inbox (and
+spam folder) of the Web3Forms account email. Repeat once on the live site.
+
 ## Files
 
 | File | Purpose |

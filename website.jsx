@@ -142,6 +142,8 @@ const STR = {
       submit: 'Send request', sending: 'Sending…',
       note: ['We only use these details to answer your request. See our ', 'Privacy Policy', '.'],
       error: 'Something went wrong. Please try again in a moment.',
+      required: 'Please fill in this field.',
+      badEmail: 'Enter a valid email address, like name@company.com.',
     },
     faq: {
       eyebrow: 'FAQ',
@@ -321,6 +323,8 @@ const STR = {
       submit: 'Talebi gönder', sending: 'Gönderiliyor…',
       note: ['Bu bilgileri yalnızca talebinizi yanıtlamak için kullanırız. Ayrıntılar: ', 'Gizlilik Politikası', '.'],
       error: 'Bir sorun oluştu. Lütfen biraz sonra tekrar deneyin.',
+      required: 'Lütfen bu alanı doldurun.',
+      badEmail: 'Geçerli bir e-posta adresi girin, ör. ad@sirket.com.',
     },
     faq: {
       eyebrow: 'SSS',
@@ -1247,6 +1251,18 @@ function FAQ() {
   );
 }
 
+/* one labelled, required text input with its own error line */
+function Field({ name, label, error, ...input }) {
+  const errId = `err-${name}`;
+  return (
+    <label className={error ? 'has-error' : ''}>
+      <span>{label}</span>
+      <input name={name} required aria-required="true" aria-invalid={!!error} aria-describedby={error ? errId : undefined} {...input}/>
+      {error && <em className="field-error" id={errId}>{error}</em>}
+    </label>
+  );
+}
+
 /* ── demo request form (Web3Forms) ──
    Spam protection: a hidden honeypot field Web3Forms checks ("botcheck"),
    a minimum fill time, and Web3Forms' own server-side filter. */
@@ -1254,13 +1270,30 @@ function DemoForm() {
   const { t, lang } = useLang();
   const f = t.form;
   const [status, setStatus] = uS('idle'); // idle | sending | error
+  const [errors, setErrors] = uS({});      // field name → 'required' | 'badEmail'
   const startedAt = uR(Date.now());
+
+  // our own messages (in the page language) instead of the browser's bubbles
+  const validate = (data) => {
+    const errs = {};
+    ['name', 'email', 'company'].forEach(k => { if (!String(data[k] || '').trim()) errs[k] = 'required'; });
+    if (!errs.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(data.email).trim())) errs.email = 'badEmail';
+    return errs;
+  };
+  const clearError = (e) => {
+    const k = e.target.name;
+    if (errors[k]) setErrors(({ [k]: _, ...rest }) => rest);
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form));
     if (data.botcheck || Date.now() - startedAt.current < 3000) return; // bot: drop silently
+    const errs = validate(data);
+    setErrors(errs);
+    const first = Object.keys(errs)[0];
+    if (first) { form.elements[first].focus(); return; }
     const key = (window.CORENEST_CONFIG || {}).web3formsKey;
     if (!key) {
       console.warn('CoreNest: set web3formsKey in config.js to receive demo requests.');
@@ -1294,12 +1327,12 @@ function DemoForm() {
   };
 
   return (
-    <form className="demo-form" onSubmit={onSubmit}>
+    <form className="demo-form" onSubmit={onSubmit} noValidate>
       <div className="demo-row">
-        <label><span>{f.name}</span><input name="name" required autoComplete="name" maxLength={120}/></label>
-        <label><span>{f.email}</span><input name="email" type="email" required autoComplete="email" maxLength={160}/></label>
+        <Field name="name" label={f.name} error={errors.name && f[errors.name]} onInput={clearError} autoComplete="name" maxLength={120}/>
+        <Field name="email" label={f.email} error={errors.email && f[errors.email]} onInput={clearError} type="email" autoComplete="email" maxLength={160}/>
       </div>
-      <label><span>{f.company}</span><input name="company" required autoComplete="organization" maxLength={160}/></label>
+      <Field name="company" label={f.company} error={errors.company && f[errors.company]} onInput={clearError} autoComplete="organization" maxLength={160}/>
       <fieldset>
         <legend>{f.interest}</legend>
         <div className="demo-choices">

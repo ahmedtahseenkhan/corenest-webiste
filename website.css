@@ -1540,3 +1540,8 @@ a:focus-visible .roll-under > span { transform: translateY(0); }
   .foot-col a { padding: 12px 0; }
   .foot-bottom a, .foot-cookies { display: inline-block; padding: 13px 0; }
 }
+
+/* ── form field errors ────────────────────────────────────────── */
+.demo-form .has-error input { border-color: rgba(242,85,85,0.7); }
+.demo-form .has-error input:focus { box-shadow: 0 0 0 3px var(--crit-soft); }
+.field-error { display: block; margin-top: 6px; font-size: 12px; font-style: normal; color: var(--crit); }
