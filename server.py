@@ -16,6 +16,28 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Expires', '0')
         super().end_headers()
 
+    # Mirror Cloudflare's static-asset rules: /privacy serves privacy.html,
+    # and anything missing gets 404.html with a 404 status.
+    def translate_path(self, path):
+        p = super().translate_path(path)
+        if not os.path.exists(p) and os.path.isfile(p + '.html'):
+            return p + '.html'
+        return p
+
+    def send_error(self, code, message=None, explain=None):
+        page = os.path.join(DIR, '404.html')
+        if code == 404 and os.path.isfile(page):
+            with open(page, 'rb') as f:
+                body = f.read()
+            self.send_response(404)
+            self.send_header('Content-Type', 'text/html; charset=utf-8')
+            self.send_header('Content-Length', str(len(body)))
+            self.end_headers()
+            if self.command != 'HEAD':
+                self.wfile.write(body)
+            return
+        super().send_error(code, message, explain)
+
     def log_message(self, fmt, *args):
         print(f"[website] {fmt % args}")
 
