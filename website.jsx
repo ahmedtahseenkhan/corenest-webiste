@@ -20,18 +20,13 @@ const IC = {
   play:   <Ico fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></Ico>,
   check:  <Ico><path d="M20 6 9 17l-5-5"/></Ico>,
   x:      <Ico><path d="M18 6 6 18M6 6l12 12"/></Ico>,
-  star:   <Ico fill="currentColor" stroke="none"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></Ico>,
   zap:    <Ico><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></Ico>,
-  cross:  <Ico><circle cx="12" cy="12" r="9"/><path d="M22 12h-4M6 12H2M12 6V2M12 22v-4"/></Ico>,
   swirl:  <Ico><path d="M21 12a9 9 0 1 1-9-9c4.5 0 7 3 7 7s-2.5 5-5 5-3-1.5-3-3"/></Ico>,
   compass:<Ico><circle cx="12" cy="12" r="9"/><path d="m16 8-6 2-2 6 6-2 2-6z"/></Ico>,
   flask:  <Ico><path d="M9 3h6M10 3v6L4 20a2 2 0 0 0 1.7 3h12.6A2 2 0 0 0 20 20l-6-11V3"/></Ico>,
-  cloud:  <Ico><path d="M17 19a5 5 0 0 0 .5-9.9 7 7 0 0 0-13.5 2.4A4 4 0 0 0 5 19h12z"/></Ico>,
   scale:  <Ico><path d="M12 3v18M6 7l-3 7c0 2 1.5 3 3 3s3-1 3-3L6 7zM18 7l-3 7c0 2 1.5 3 3 3s3-1 3-3l-3-7zM5 7h14"/></Ico>,
   chip:   <Ico><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9zM9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></Ico>,
   search: <Ico><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></Ico>,
-  gauge:  <Ico><path d="M12 14 18 8M22 12a10 10 0 1 0-19.5 3"/><circle cx="12" cy="14" r="1.5"/></Ico>,
-  ext:    <Ico><path d="M7 17 17 7M9 7h8v8"/></Ico>,
   sparkle:<Ico><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><path d="M12 8.5 13.4 11l2.5 1-2.5 1L12 15.5 10.6 13l-2.5-1 2.5-1z" fill="currentColor" stroke="none"/></Ico>,
   rss:    <Ico><path d="M5 19a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM5 12a7 7 0 0 1 7 7M5 5a14 14 0 0 1 14 14"/></Ico>,
   bug:    <Ico><path d="M8 7a4 4 0 0 1 8 0M5 11h14M6 8 4 6M18 8l2-2M4 13H2M22 13h-2M5 17l-2 2M19 17l2 2"/><rect x="8" y="7" width="8" height="11" rx="4"/></Ico>,
@@ -623,7 +618,11 @@ function HeroShot() {
           {s.badge && <span className="shot-badge">{s.badge}</span>}
           <span className="live">LIVE</span>
         </div>
-        <img key={lang} src={s.src} alt={s.alt} width="2400" height="1310" fetchpriority="high"/>
+        {/* above the fold: eager + high priority; phones get the 1200 px file */}
+        <img key={lang} src={s.src.replace('.webp', '-1200.webp')}
+             srcSet={`${s.src.replace('.webp', '-1200.webp')} 1200w, ${s.src} 2400w`}
+             sizes="(max-width: 720px) calc(100vw - 40px), (max-width: 1264px) calc(100vw - 64px), 1200px"
+             alt={s.alt} width="2400" height="1310" fetchpriority="high"/>
       </div>
     </div>
   );
