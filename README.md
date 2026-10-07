@@ -13,10 +13,13 @@ python3 server.py
 
 ## Languages
 
-The site opens in **Turkish** on every new visit.
+- Turkish (default): <http://localhost:5051/>
+- English: <http://localhost:5051/en/>
 
-- Click the **`EN / TR`** toggle in the top-right of the nav (the choice lasts for that visit), **or**
-- Open with a query param: <http://localhost:5051/?lang=en> (`?lang=tr` for Turkish)
+Each language has its own URL with its own title, description, canonical and
+share tags. The **`EN / TR`** toggle switches URL without reloading; old
+`?lang=en` links are moved to `/en/`. The plain pages (privacy, thanks, 404)
+follow the language picked during the visit.
 
 The hero shows the real dashboard: the English UI on the English site and the
 Arabic (right-to-left) UI on the Turkish site (`assets/dashboard-en.webp`, `assets/dashboard-ar.webp`).
@@ -40,10 +43,11 @@ no build step. Skiper UI's free components require attribution, which is the
 
 | File | Purpose |
 |------|---------|
-| `index.html` | Entry point — loads React, Babel, and the app |
+| `index.html`, `en/index.html` | Turkish / English entry points (static SEO head), both load the same app |
 | `website.jsx` | The entire app: components + the EN/TR translation dictionary |
 | `website.css` | All styles (dark, SOC-dashboard aesthetic) |
-| `assets/` | Dashboard screenshots and the link-preview image |
+| `assets/` | Dashboard screenshots and the link-preview images (TR + EN) |
+| `favicon.*`, `icon-*.png`, `site.webmanifest` | Browser and app icons |
 | `config.js` | Web3Forms key and Google Analytics ID |
 | `analytics.js` | Cookie banner + Google Analytics (consent first) |
 | `privacy.html`, `thanks.html`, `404.html` | Plain pages, both languages; `pages.js` switches them |

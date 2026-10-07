@@ -9,8 +9,10 @@
   <meta name="description" content="CoreNest web sitesinin hangi kişisel verileri hangi amaçla işlediği, çerezler ve KVKK kapsamındaki haklarınız."/>
   <link rel="canonical" href="https://corenest.io/privacy"/>
   <meta name="theme-color" content="#08090b"/>
+  <link rel="icon" href="/favicon.ico" sizes="32x32"/>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
   <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+  <link rel="manifest" href="/site.webmanifest"/>
 
   <meta property="og:type" content="website"/>
   <meta property="og:site_name" content="CoreNest"/>
@@ -32,9 +34,9 @@
 <body>
   <nav class="nav page-nav">
     <div class="container nav-inner">
-      <a class="nav-brand" href="/">
+      <a class="nav-brand" href="/" aria-label="CoreNest">
         <span class="nav-brand-logo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
         </span>
         <span class="nav-wordmark">CoreNest</span>
       </a>
@@ -117,7 +119,8 @@
     </article>
 
     <!-- ───────────────────────── English ───────────────────────── -->
-    <article class="doc" data-lang="en" hidden>
+    <template data-lang="en">
+    <article class="doc">
       <h1>Privacy Policy</h1>
       <p class="doc-meta">Last updated: 7 October 2026</p>
 
@@ -181,6 +184,7 @@
       <p>We may update this policy. The current version is always on this page, with the date at the top.</p>
       <p><a href="/">← Back to home</a></p>
     </article>
+    </template>
   </main>
 
   <footer class="foot">

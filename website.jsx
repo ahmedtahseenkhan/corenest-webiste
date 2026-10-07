@@ -9,7 +9,7 @@ const { useState: uS, useEffect: uE, useRef: uR, useContext: uC } = React;
 
 /* ── tiny icon helper (subset of product I, redrawn for marketing) ── */
 const Ico = ({ d, children, size = 16, stroke = 1.6, fill = 'none' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke="currentColor"
+  <svg aria-hidden="true" focusable="false" width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke="currentColor"
        strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round">
     {d && <path d={d}/>}{children}
   </svg>
@@ -60,7 +60,7 @@ const STR = {
       demo: 'Book a demo', tour: 'Watch product tour',
       micro: ['Free 14-day trial', 'Live in 30 minutes', 'No credit card'],
       chips: ['+24 alerts in last 60s', 'jane.k · risk 142', 'MTTR 18min', 'MITRE T1059 +4'],
-      shot: { src: 'assets/dashboard-en.webp', alt: 'CoreNest overview dashboard', path: 'corenest / overview', badge: '' },
+      shot: { src: '/assets/dashboard-en.webp', alt: 'CoreNest overview dashboard', path: 'corenest / overview', badge: '' },
     },
     stats: [
       { sub: 'K', b: 'events / sec' },
@@ -239,7 +239,7 @@ const STR = {
       demo: 'Demo planla', tour: 'Ürün turunu izle',
       micro: ['14 gün ücretsiz deneme', '30 dakikada kurulum', 'Kredi kartı gerekmez'],
       chips: ["son 60 sn'de +24 uyarı", 'jane.k · risk 142', 'MTTR 18dk', 'MITRE T1059 +4'],
-      shot: { src: 'assets/dashboard-ar.webp', alt: 'CoreNest genel bakış panosu, Arapça arayüz', path: 'corenest / genel bakış', badge: 'Arapça · RTL arayüz' },
+      shot: { src: '/assets/dashboard-ar.webp', alt: 'CoreNest genel bakış panosu, Arapça arayüz', path: 'corenest / genel bakış', badge: 'Arapça · RTL arayüz' },
     },
     stats: [
       { sub: 'K', b: 'olay / sn' },
@@ -514,22 +514,38 @@ function TextRoll({ children }) {
 try { localStorage.removeItem('cn-lang'); } catch (e) {}
 const LangCtx = React.createContext({ lang: 'tr', setLang: () => {}, t: null });
 function useLang() { return uC(LangCtx); }
+// Turkish lives at /, English at /en/: each URL has its own static <head>
+// (title, description, canonical, share tags) for search engines and link previews.
+const SITE = 'https://corenest.io';
+const pathFor = (l) => (l === 'en' ? '/en/' : '/');
+const langFromPath = () => (/^\/en(\/|$)/.test(location.pathname) ? 'en' : 'tr');
 function LangProvider({ children }) {
   const [lang, setLangState] = uS(() => {
     try {
-      const q = new URLSearchParams(location.search).get('lang');
-      if (q === 'en' || q === 'tr') return q;
-      // A language picked during this visit sticks for the visit only.
-      const saved = sessionStorage.getItem('cn-lang');
-      if (saved === 'en' || saved === 'tr') return saved;
+      // older links used ?lang=en / ?lang=tr; move them to the real URL
+      const u = new URL(location.href);
+      const q = u.searchParams.get('lang');
+      if (q === 'en' || q === 'tr') {
+        u.searchParams.delete('lang');
+        u.pathname = pathFor(q);
+        history.replaceState(null, '', u.pathname + u.search + u.hash);
+        return q;
+      }
     } catch (e) {}
-    return 'tr'; // Turkish is the default language
+    return langFromPath();
   });
   const setLang = (l) => {
+    if (l === lang) return;
+    history.pushState(null, '', pathFor(l) + location.search + location.hash);
     setLangState(l);
-    try { sessionStorage.setItem('cn-lang', l); } catch (e) {}
   };
   uE(() => {
+    const onPop = () => setLangState(langFromPath());
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+  uE(() => {
+    // the plain pages (privacy, thanks, 404) and the cookie banner follow this visit's language
     try { sessionStorage.setItem('cn-lang', lang); } catch (e) {}
     window.dispatchEvent(new CustomEvent('cn:lang', { detail: lang }));
     document.documentElement.lang = lang;
@@ -537,10 +553,8 @@ function LangProvider({ children }) {
     document.title = m.title;
     const md = document.querySelector('meta[name="description"]');
     if (md) md.setAttribute('content', m.desc);
-    // each language version is its own canonical URL (matches the hreflang links)
-    let cl = document.querySelector('link[rel="canonical"]');
-    if (!cl) { cl = document.createElement('link'); cl.rel = 'canonical'; document.head.appendChild(cl); }
-    cl.href = lang === 'en' ? 'https://corenest.io/?lang=en' : 'https://corenest.io/';
+    const cl = document.querySelector('link[rel="canonical"]');
+    if (cl) cl.href = SITE + pathFor(lang);
   }, [lang]);
   return <LangCtx.Provider value={{ lang, setLang, t: STR[lang] }}>{children}</LangCtx.Provider>;
 }
@@ -563,9 +577,9 @@ function Nav() {
   return (
     <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
       <div className="container nav-inner">
-        <a className="nav-brand" href="/">
+        <a className="nav-brand" href={pathFor(lang)} aria-label="CoreNest">
           <span className="nav-brand-logo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               <path d="M9 12l2 2 4-4"/>
             </svg>
@@ -1119,7 +1133,7 @@ function TrendChart() {
     { key: 'crit', v: (d) => d.crit,                          color: 'var(--crit)' },
   ];
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: 110, display: 'block' }}>
+    <svg aria-hidden="true" viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: 110, display: 'block' }}>
       {series.map((s, si) => {
         const top = data.map((d, i) => `${i * stepX},${H - (s.v(d) / max) * H}`).join(' ');
         return (
@@ -1200,6 +1214,20 @@ function Compare() {
 function FAQ() {
   const { t } = useLang();
   const f = t.faq;
+  uE(() => {
+    let el = document.getElementById('ld-faq');
+    if (!el) {
+      el = document.createElement('script');
+      el.type = 'application/ld+json';
+      el.id = 'ld-faq';
+      document.head.appendChild(el);
+    }
+    el.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: f.items.map(it => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })),
+    });
+  }, [f]);
   return (
     <section className="section" id="faq">
       <div className="container faq-grid">
@@ -1320,15 +1348,15 @@ function FinalCTA() {
 
 /* ── footer (link underline from Skiper UI 40) ── */
 function Footer() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   return (
     <footer className="foot">
       <div className="container">
         <div className="foot-grid">
           <div className="foot-brand">
-            <a className="nav-brand" href="/">
+            <a className="nav-brand" href={pathFor(lang)} aria-label="CoreNest">
               <span className="nav-brand-logo">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                   <path d="M9 12l2 2 4-4"/>
                 </svg>
@@ -1339,7 +1367,7 @@ function Footer() {
           </div>
           {t.footer.cols.map((col, ci) => (
             <div className="foot-col" key={ci}>
-              <h5>{col.title}</h5>
+              <h2 className="foot-h">{col.title}</h2>
               {col.links.map((lk, li) => (
                 <a className="ulink" href={lk.href} key={li}>{lk.label}</a>
               ))}

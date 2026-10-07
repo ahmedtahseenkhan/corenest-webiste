@@ -7,9 +7,12 @@
   <title>Teşekkürler — CoreNest</title>
   <meta name="description" content="Demo talebiniz CoreNest ekibine ulaştı. En kısa sürede size e-postayla dönüş yapacağız."/>
   <meta name="robots" content="noindex"/>
+  <link rel="canonical" href="https://corenest.io/thanks"/>
   <meta name="theme-color" content="#08090b"/>
+  <link rel="icon" href="/favicon.ico" sizes="32x32"/>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
   <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+  <link rel="manifest" href="/site.webmanifest"/>
 
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -34,9 +37,9 @@
 <body>
   <nav class="nav page-nav">
     <div class="container nav-inner">
-      <a class="nav-brand" href="/">
+      <a class="nav-brand" href="/" aria-label="CoreNest">
         <span class="nav-brand-logo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
         </span>
         <span class="nav-wordmark">CoreNest</span>
       </a>
@@ -61,7 +64,8 @@
           <a class="btn btn-secondary" href="/#faq">Sık sorulan sorular</a>
         </div>
       </div>
-      <div data-lang="en" hidden>
+      <template data-lang="en">
+      <div>
         <h1>Thanks, we've got your request.</h1>
         <p class="lede">We'll get back to you by email shortly.</p>
         <div class="status-actions">
@@ -69,6 +73,7 @@
           <a class="btn btn-secondary" href="/#faq">Read the FAQ</a>
         </div>
       </div>
+      </template>
     </div>
   </main>
 </body>

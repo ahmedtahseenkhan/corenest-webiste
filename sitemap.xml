@@ -5,13 +5,13 @@
     <loc>https://corenest.io/</loc>
     <lastmod>2026-10-07</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://corenest.io/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://corenest.io/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://corenest.io/en/"/>
   </url>
   <url>
-    <loc>https://corenest.io/?lang=en</loc>
+    <loc>https://corenest.io/en/</loc>
     <lastmod>2026-10-07</lastmod>
     <xhtml:link rel="alternate" hreflang="tr" href="https://corenest.io/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://corenest.io/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://corenest.io/en/"/>
   </url>
   <url>
     <loc>https://corenest.io/privacy</loc>

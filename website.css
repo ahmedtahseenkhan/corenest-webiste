@@ -706,7 +706,8 @@ h4 { font-size: 15px; }
   line-height: 1.5;
   max-width: 280px;
 }
-.foot-col h5 {
+.foot-col .foot-h {
+  line-height: 1.55;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
