@@ -13,16 +13,60 @@ python3 server.py
 
 ## Languages
 
-- Click the **`EN / TR`** toggle in the top-right of the nav, **or**
-- Open with a query param: <http://localhost:5051/?lang=tr> (`?lang=en` for English)
+- Turkish (default): <http://localhost:5051/>
+- English: <http://localhost:5051/en/>
 
-Your choice is saved in `localStorage` and otherwise falls back to the browser language.
+Each language has its own URL with its own title, description, canonical and
+share tags. The **`EN / TR`** toggle switches URL without reloading; old
+`?lang=en` links are moved to `/en/`. The plain pages (privacy, thanks, 404)
+follow the language picked during the visit.
+
+The hero shows the real dashboard: the English UI on the English site and the
+Arabic (right-to-left) UI on the Turkish site (`assets/dashboard-en.webp`, `assets/dashboard-ar.webp`).
+
+## Components
+
+The motion effects (text-roll nav links, letter scroll reveal, hover-expand
+panels, sticky stacked cards, scroll-drawn line, underline links) are ported
+from [Skiper UI](https://skiper-ui.com) to plain React + CSS, so there is still
+no build step. Skiper UI's free components require attribution, which is the
+"Components by Skiper UI" link in the footer.
+
+## Settings
+
+`config.js` holds the two values the live site needs:
+
+- `web3formsKey`: Web3Forms access key; demo requests are emailed to the address you signed up with.
+- `gaId`: Google Analytics 4 measurement ID. When set, a cookie banner asks for consent and GA loads only after "Accept".
+- `company`: legal name, email, phone, address. Shown in the footer's Contact column and filled into the privacy policy and terms.
+
+Search the code for `TODO(owner)` and `TODO(legal)` to find everything still waiting for real content.
+
+## Demo form
+
+Submissions go from the browser to **Web3Forms** (`api.web3forms.com`), which
+emails them to the address that owns `web3formsKey`. Nothing is stored on
+this site. Spam protection: a hidden honeypot field, a 3-second minimum before
+sending, and Web3Forms' own filter. Success goes to `/thanks`, which also sends
+the `generate_lead` analytics event (only with cookie consent).
+
+To test delivery: set `web3formsKey`, run `python3 server.py`, send the form on
+<http://localhost:5051/#cta> with your own address, and check the inbox (and
+spam folder) of the Web3Forms account email. Repeat once on the live site.
 
 ## Files
 
 | File | Purpose |
 |------|---------|
-| `index.html` | Entry point — loads React, Babel, and the app |
+| `index.html`, `en/index.html` | Turkish / English entry points (static SEO head), both load the same app |
 | `website.jsx` | The entire app: components + the EN/TR translation dictionary |
 | `website.css` | All styles (dark, SOC-dashboard aesthetic) |
+| `assets/` | Dashboard screenshots and the link-preview images (TR + EN) |
+| `favicon.*`, `icon-*.png`, `site.webmanifest` | Browser and app icons |
+| `config.js` | Web3Forms key, Google Analytics ID, company contact details |
+| `analytics.js` | Cookie banner + Google Analytics (consent first) |
+| `privacy.html`, `terms.html`, `thanks.html`, `404.html` | Plain pages, both languages; `pages.js` switches them and fills company details from `config.js` |
+| `robots.txt`, `sitemap.xml` | For search engines (domain: corenest.io) |
+| `.assetsignore` | Repo files Cloudflare must not publish (`.git`, `server.py`, …) |
+| `_headers` | Security headers (CSP, HSTS, …); Cloudflare reads it, `server.py` mirrors it locally |
 | `server.py` | Static file server on port 5051 (sends no-cache headers) |

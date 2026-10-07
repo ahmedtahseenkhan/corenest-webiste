@@ -1,0 +1,9 @@
+# Files in the repo that must not be published as part of the website
+.git
+.gitignore
+.assetsignore
+.wrangler
+node_modules
+README.md
+server.py
+wrangler.jsonc
